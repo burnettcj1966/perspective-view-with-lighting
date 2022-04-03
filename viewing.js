@@ -105,9 +105,9 @@ window.onload = function init() {
     //lighting for the evening. Sun faces the left face of the building (west)
     //color illuminates with more orange/darker
     else {
-        lightPosition = vec4(-1.0, -1.0 , 10.0, 0.0 );
+        lightPosition = vec4(-1.0, -0.5, 7, 0.0 );
         lightAmbient = vec4(0.2, 0.2, 0.3, 1.0 );
-        lightDiffuse = vec4( 1.0, 1.0 , 1.0, 1.0 );
+        lightDiffuse = vec4( 1.0, 1.1 , 1.0, 1.0 );
         lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 
         materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );

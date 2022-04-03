@@ -89,6 +89,8 @@ window.onload = function init() {
     var lightPosition, lightAmbient, lightDiffuse, lightSpecular
     var materialAmbient, materialDiffuse, materialSpecular, materialShininess
 
+    //lighting for the morning. Sun faces the right face of the building (east)
+    //color illuminates with more yellow/brighter 
     if (morning) {
         lightPosition = vec4(1.0, -0.5, 3.0, 0.0 );
         lightAmbient = vec4(0.2, 0.2, 0.4, 1.0 );
@@ -100,6 +102,8 @@ window.onload = function init() {
         materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
         materialShininess = 100.0;
     }
+    //lighting for the evening. Sun faces the left face of the building (west)
+    //color illuminates with more orange/darker
     else {
         lightPosition = vec4(-1.0, -1.0 , 10.0, 0.0 );
         lightAmbient = vec4(0.2, 0.2, 0.3, 1.0 );

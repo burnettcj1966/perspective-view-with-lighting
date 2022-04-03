@@ -8,6 +8,8 @@ var NumVertices  = 36;
 var pointsArray = [];
 var colorsArray = [];
 
+var morning = true;
+
 //SEH Coordinates from previous assignment
 var vertices = [
     vec4( -0.70 , -0.37,  0.48, 1.0 ),
@@ -31,16 +33,6 @@ var vertexColors = [
     vec4( 1.0, 1.0, 1.0, 1.0 ),  // white
 ];
 
-//added lighting
-var lightPosition = vec4(1.0, 2.0, 3.0, 0.0 );
-var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
-var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
-var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
-var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
-var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
-var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
-var materialShininess = 100.0;
-
 var ambientColor, diffuseColor, specularColor;
 
 var near = 0.3;
@@ -60,18 +52,24 @@ const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 1.0, 0.0);
 
 function quad(a, b, c, d) {
+    //smooth out the sides to avoid having visable triangles
+    var t1 = subtract(vertices[b], vertices[a]);
+    var t2 = subtract(vertices[c], vertices[b]);
+    var normal = cross(t1, t2);
+    var normal = vec3(normal);
+
      pointsArray.push(vertices[a]);
-     colorsArray.push(vertexColors[a]);
+     colorsArray.push(normal);
      pointsArray.push(vertices[b]);
-     colorsArray.push(vertexColors[a]);
+     colorsArray.push(normal);
      pointsArray.push(vertices[c]);
-     colorsArray.push(vertexColors[a]);
+     colorsArray.push(normal);
      pointsArray.push(vertices[a]);
-     colorsArray.push(vertexColors[a]);
+     colorsArray.push(normal);
      pointsArray.push(vertices[c]);
-     colorsArray.push(vertexColors[a]);
+     colorsArray.push(normal);
      pointsArray.push(vertices[d]);
-     colorsArray.push(vertexColors[a]);
+     colorsArray.push(normal);
 }
 
 
@@ -87,6 +85,32 @@ function colorCube()
 
 
 window.onload = function init() {
+    //lighting assignment
+    var lightPosition, lightAmbient, lightDiffuse, lightSpecular
+    var materialAmbient, materialDiffuse, materialSpecular, materialShininess
+
+    if (morning) {
+        lightPosition = vec4(1.0, -0.5, 3.0, 0.0 );
+        lightAmbient = vec4(0.2, 0.2, 0.4, 1.0 );
+        lightDiffuse = vec4( 1.0, 1.4, 1.0, 1.0 );
+        lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+
+        materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
+        materialDiffuse = vec4( 1.0, 0.8 , 0.0, 1.0);
+        materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+        materialShininess = 100.0;
+    }
+    else {
+        lightPosition = vec4(-1.0, -1.0 , 10.0, 0.0 );
+        lightAmbient = vec4(0.2, 0.2, 0.3, 1.0 );
+        lightDiffuse = vec4( 1.0, 1.0 , 1.0, 1.0 );
+        lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+
+        materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
+        materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
+        materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+        materialShininess = 100.0;
+    }
 
     canvas = document.getElementById( "gl-canvas" );
 
@@ -114,7 +138,6 @@ window.onload = function init() {
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW );
 
-    //var vColor = gl.getAttribLocation( program, "vColor" );
     var vNormal = gl.getAttribLocation( program, "vNormal" );
     gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vNormal);
@@ -146,7 +169,18 @@ window.onload = function init() {
     gl.uniform1f(gl.getUniformLocation(program,
        "shininess"),materialShininess);
 
-// buttons for viewing parameters
+
+    //buttons for switching from morning to evening
+    document.getElementById("Button0").onclick = function() {
+        morning = true;
+        init();
+    }
+    document.getElementById("Button1").onclick = function() {
+        morning = false;
+        init();
+    }
+
+
     render();
 }
 

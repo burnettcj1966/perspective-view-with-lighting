@@ -10,7 +10,7 @@ var colorsArray = [];
 
 var morning = true;
 
-//SEH Coordinates from previous assignment
+//SEH Coordinates from previous assignment, scaled to fit clipping plane
 var vertices = [
     vec4( -0.70 , -0.37,  0.48, 1.0 ),
     vec4( -0.70,  0.37,  0.48,  1.0 ),
@@ -33,6 +33,7 @@ var vertexColors = [
     vec4( 1.0, 1.0, 1.0, 1.0 ),  // white
 ];
 
+//essential lighting and viewing variables
 var ambientColor, diffuseColor, specularColor;
 
 var near = 0.3;
@@ -105,7 +106,7 @@ window.onload = function init() {
     //lighting for the evening. Sun faces the left face of the building (west)
     //color illuminates with more orange/darker
     else {
-        lightPosition = vec4(-1.0, -0.5, 7, 0.0 );
+        lightPosition = vec4(-1.0, -0.5, 7.0, 0.0 );
         lightAmbient = vec4(0.2, 0.2, 0.3, 1.0 );
         lightDiffuse = vec4( 1.0, 1.1 , 1.0, 1.0 );
         lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -174,16 +175,17 @@ window.onload = function init() {
        "shininess"),materialShininess);
 
 
-    //buttons for switching from morning to evening
+    //buttons for switching from evening to morning
     document.getElementById("Button0").onclick = function() {
         morning = true;
         init();
     }
+
+    //buttons for switching from morning to evening
     document.getElementById("Button1").onclick = function() {
         morning = false;
         init();
     }
-
 
     render();
 }
